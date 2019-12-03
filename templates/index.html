@@ -28,6 +28,7 @@ th, td {
 tr:nth-child(even) {background-color: #f2f2f2;}
 
 td{font-family: Arial; font-size: 10pt;}
+th{font-family: Arial; font-size: 10pt;}
 </style>
 
   </head>
@@ -36,17 +37,46 @@ td{font-family: Arial; font-size: 10pt;}
         <input type="search" placeholder="Mots-clés..." name="search" id="search" required/>
         <button type="submit">Rechercher</button>
     </form>
-        <p>&nbsp;</p>
     <table>
+      <tr>
+        <th width="150px">image</th>
+        <th>nom et lien wikidata</th>
+        <th>nom scientifique</th>
+        <th>rang taxinomique</th>
+        <th>taxon supérieur</th>
+        <th>identifiant SPECIES+</th>
+
+        </tr>
+        <tr>
             {% for item in items %}
             <tr height="150px">
-            <td align="left" width="150px">
+            <td align="left" >
                 {% if item.image is defined %}
                     <img src="{{ item.image.value }}" width="75px" />
                 {% endif %}
             </td>
             <td align="left">
                 <a href="{{ item.item.value }}">{{ item.itemLabel.value }}</a>
+            </td>
+           <td align="left" >
+                {% if item.nomscientifique is defined %}
+                    {{ item.nomscientifique.value }}
+                {% endif %}
+            </td>
+           <td align="left" >
+                {% if item.rangtaxinomique is defined %}
+                    <a href="{{ item.taxonsuperieur.value }}">{{ item.taxonsuperieur.value }}</a>
+                {% endif %}
+            </td>
+           <td align="left" >
+                {% if item.taxonsuperieur is defined %}
+                    <a href="{{ item.taxonsuperieur.value }}">{{ item.taxonsuperieur.value }}</a>
+                {% endif %}
+            </td>
+           <td align="left" >
+                {% if item.identifiantSPECIES is defined %}
+                    {{ item.identifiantSPECIES.value }}
+                {% endif %}
             </td>
             {% endfor %}
         </tr>
