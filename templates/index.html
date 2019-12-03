@@ -14,11 +14,43 @@
       var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
 
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+td{font-family: Arial; font-size: 10pt;}
+</style>
+
   </head>
   <body>
     <form action="search" method= "post">
         <input type="search" placeholder="Mots-clés..." name="search" id="search" required/>
         <button type="submit">Rechercher</button>
     </form>
+        <p>&nbsp;</p>
+    <table>
+            {% for item in items %}
+            <tr height="150px">
+            <td align="left" width="150px">
+                {% if item.image is defined %}
+                    <img src="{{ item.image.value }}" width="75px" />
+                {% endif %}
+            </td>
+            <td align="left">
+                <a href="{{ item.item.value }}">{{ item.itemLabel.value }}</a>
+            </td>
+            {% endfor %}
+        </tr>
+    </table>
+
   </body>
 </html>

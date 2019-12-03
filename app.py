@@ -27,8 +27,7 @@ def search():
 
         for result in results["results"]["bindings"]:
             print(result)
-
-        return(results)
+        return render_template('index.html', items = results["results"]["bindings"])
 
 if __name__ == '__main__':
     app.run()
