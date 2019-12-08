@@ -1,86 +1,70 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8"/>
-		<meta http-equiv="expires" content="0">
-		<meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="pragma" content="no-cache">
 
     <title>Wild life</title>
     <script type="text/javascript"
-      src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
+            src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
     </script>
 
     <script type="text/javascript">
-      var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
 
-<style>
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-th, td {
-  text-align: left;
-  padding: 8px;
-}
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
 
-tr:nth-child(even) {background-color: #f2f2f2;}
+        tr:nth-child(even) {background-color: #f2f2f2;}
 
-td{font-family: Arial; font-size: 10pt;}
-th{font-family: Arial; font-size: 10pt;}
-</style>
+        td{font-family: Arial; font-size: 10pt;}
+        th{font-family: Arial; font-size: 10pt;}
+    </style>
 
-  </head>
-  <body>
-    <form action="search" method= "post">
-        <input type="search" placeholder="Mots-clés..." name="search" id="search" required/>
-        <button type="submit">Rechercher</button>
-    </form>
-    <table>
-      <tr>
-        <th width="150px">image</th>
-        <th>nom et lien wikidata</th>
-        <th>nom scientifique</th>
-        <th>rang taxinomique</th>
-        <th>taxon supérieur</th>
-        <th>identifiant SPECIES+</th>
-
-        </tr>
-        <tr>
-            {% for item in items %}
-            <tr height="150px">
-            <td align="left" >
+</head>
+<body>
+<form action="search" method= "post">
+    <input type="search" placeholder="Mots-clés..." name="search" id="search" required/>
+    <button type="submit">Rechercher</button>
+</form>
+<table>
+    {% for item in items %}
+        <tr height="150px">
+            <td width="75px">
                 {% if item.image is defined %}
                     <img src="{{ item.image.value }}" width="75px" />
                 {% endif %}
             </td>
             <td align="left">
-                <a href="{{ item.item.value }}">{{ item.itemLabel.value }}</a>
+                <h1><a href="{{ item.item.value }}">{{ item.itemLabel.value }}</a></h1>
+                <ul>
+                    <li>{% if item.nomscientifique is defined %}
+                        Nom scientifique : <i>{{ item.nomscientifique.value }}</i></li>
+                    {% endif %}
+                    <li>{% if item.rangtaxinomique is defined %}
+                        Rang taxinomique : <a href="{{ item.taxonsuperieur.value }}">{{ item.rangtaxinomiqueLabel.value }}</a>
+                    {% endif %}</li>
+                    <li>{% if item.taxonsuperieur is defined %}
+                        Taxon supérieur : <a href="{{ item.taxonsuperieur.value }}">{{ item.taxonsuperieurLabel.value }}</a>
+                    {% endif %}</li>
+                    <li>{% if item.identifiantSPECIES is defined %}
+                        Id SPECIES+ : {{ item.identifiantSPECIES.value }}
+                    {% endif %}</li>
+                </ul>
             </td>
-           <td align="left" >
-                {% if item.nomscientifique is defined %}
-                    {{ item.nomscientifique.value }}
-                {% endif %}
-            </td>
-           <td align="left" >
-                {% if item.rangtaxinomique is defined %}
-                    <a href="{{ item.taxonsuperieur.value }}">{{ item.taxonsuperieur.value }}</a>
-                {% endif %}
-            </td>
-           <td align="left" >
-                {% if item.taxonsuperieur is defined %}
-                    <a href="{{ item.taxonsuperieur.value }}">{{ item.taxonsuperieur.value }}</a>
-                {% endif %}
-            </td>
-           <td align="left" >
-                {% if item.identifiantSPECIES is defined %}
-                    {{ item.identifiantSPECIES.value }}
-                {% endif %}
-            </td>
-            {% endfor %}
         </tr>
-    </table>
+    {% endfor %}
+</table>
 
-  </body>
+</body>
 </html>

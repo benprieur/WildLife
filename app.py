@@ -20,14 +20,26 @@ def search():
     if request.method == 'POST':
         search = request.form['search']
         print(search)
+
+        #Apply Wikidata request
         wikidata_request_send = WIKIDATA_REQUEST1 + "\"" + search + "\"" + WIKIDATA_REQUEST2
         print(wikidata_request_send)
 
         results = get_results(endpoint_url, wikidata_request_send)
 
+        #Filtering duplicates
+        listIdsSPECIES = []
+        listResults = []
         for result in results["results"]["bindings"]:
-            print(result)
-        return render_template('index.html', items = results["results"]["bindings"])
+
+            id = result["identifiantSPECIES"]["value"]
+            print(id)
+            if id not in listIdsSPECIES:
+                listIdsSPECIES.append(id)
+                listResults.append(result)
+                #print(result)
+
+        return render_template('index.html', items = listResults)
 
 if __name__ == '__main__':
     app.run()
