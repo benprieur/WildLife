@@ -19,6 +19,7 @@ def index():
 def search():
     if request.method == 'POST':
         search = request.form['search']
+        search = search.lower()
         print(search)
 
         #Apply Wikidata request
