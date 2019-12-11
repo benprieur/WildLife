@@ -1,6 +1,9 @@
 from flask import Flask, request, render_template, jsonify
 from SPARQLWrapper import SPARQLWrapper, JSON
 from wikidata import WIKIDATA_REQUEST1, WIKIDATA_REQUEST2
+from cites import CITES1, CITES2, CITES3
+import requests
+import json
 
 app = Flask(__name__)
 
@@ -17,7 +20,8 @@ def index():
 
 @app.route('/search', methods=['post'])
 def search():
-    if request.method == 'POST':
+    if request.method == 'POST' :
+
         search = request.form['search']
         search = search.lower()
         print(search)
@@ -42,5 +46,24 @@ def search():
 
         return render_template('index.html', items = listResults)
 
+@app.route('/cites/<int:id>')
+def cites(id):
+    req = CITES1 + str(id) + CITES2
+    print (req)
+    result = requests.get(req, headers={'X-Authentication-Token': CITES3})
+    wjdata = json.loads(result.text)
+    #print(wjdata)
+
+    if len(wjdata) == 0:
+        return jsonify({'value': 'Aucun pays déclaré dans la base CITES.'})
+    else:
+        return_val = ""
+        for val in wjdata:
+            print (str(val["name"]))
+            return_val = return_val + str(val["name"]) + ' - '
+        return jsonify({'value': return_val})
+
+
 if __name__ == '__main__':
+    #app.run(debug=True)
     app.run()
