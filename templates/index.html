@@ -5,15 +5,45 @@
     <meta http-equiv="expires" content="0">
     <meta http-equiv="pragma" content="no-cache">
 
-    <title>Wild life</title>
-    <script type="text/javascript"
-            src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
-
-        var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-
-    </script>
-
     <style>
+        @import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
+
+        #call2action {
+            text-align: center;
+            padding-top: 24px;
+            color: #33375F;
+            font-weight: bold;
+            font-size: 28px;
+            background-color: #F5F5FA;
+        }
+
+        #searchform {
+            text-align: center;
+            padding-top: 24px;
+            background-color: #F5F5FA;
+            padding-bottom: 24px;
+        }
+
+        #searchbutton {
+            background: linear-gradient(135deg, #3043FD 0%, #33375F 100%);
+            border-radius: 36px;
+            border: 0px solid;
+            color: white;
+            padding: 8px 16px 9px 16px;
+            font-weight: bold;
+            font-family: Raleway;
+            margin-left: -90px;
+            cursor: pointer;
+        }
+
+        #commentaire {
+            font-size: 16px;
+            font-weight: bold;
+            color: #33375F;
+        }
+
+        body{ font-family: Raleway;}
+
         table {
             border-collapse: collapse;
             width: 100%;
@@ -24,24 +54,34 @@
             padding: 8px;
         }
 
-        tr:nth-child(even) {background-color: #f2f2f2;}
+        tr:nth-child(even) {background-color: #F5F5FA;}
 
-        td{font-family: Arial; font-size: 10pt;}
-        th{font-family: Arial; font-size: 10pt;}
-        p{font-family: Arial; font-size: 10pt;}
+        td{font-size: 10pt;}
+        th{font-size: 10pt;}
+        p{font-size: 10pt;}
+
+        a{ color:#33375F; }
+
     </style>
+
+    <title>Wild life</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+        var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
 
 </head>
 <body>
-<form action="search" method= "post" width="90%" id="form">
+<div id="call2action">Lancez une recherche sur la base Wikidata des espèces menacées</div>
+<form action="search" method= "post" width="90%" id="searchform">
     <input type="search" placeholder="Mots-clés..." name="search" id="search" required/>
-    <button type="submit" onclick="$('#loading').show(); document.getElementById('table').innerText = ''; document.getElementById('commentaire').innerText = '';">Rechercher</button>
+    <button type="submit" class="searchbutton" onclick="$('#loading').show(); document.getElementById('table').innerText = ''; document.getElementById('commentaire').innerText = '';">Rechercher</button>
 </form>
 <div id="content">
     <div id="loading" style="display:none;" align="center">
         <img src="/static/images/wait.gif" />
     </div>
-    <div id="commentaire"align="left">
+    <div id="commentaire" align="left">
         {% if items is defined %}
             {% if items|length == 0 %}
                 <p style="color:darkgray;"><small>Aucun résultat trouvé sur Wikidata avec ce critère pour les éléments munis de P2040.</small></p>
@@ -77,8 +117,7 @@
                     </ul>
                 </td>
                 <td>
-                    <button onclick="$.get('/cites/{{item.identifiantSPECIES.value}}', function(data) {
-                    document.getElementById('c{{item.identifiantSPECIES.value}}').innerHTML = data.value;});">En savoir +</button>
+                    <button class="searchbutton" onclick="$.get('/cites/{{item.identifiantSPECIES.value}}', function(data) { document.getElementById('c{{item.identifiantSPECIES.value}}').innerHTML = data.value;});">En savoir +</button>
                     <p id='c{{item.identifiantSPECIES.value}}'></p>
                 </td>
             </tr>

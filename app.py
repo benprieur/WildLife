@@ -51,8 +51,10 @@ def cites(id):
     req = CITES1 + str(id) + CITES2
     print (req)
     result = requests.get(req, headers={'X-Authentication-Token': CITES3})
+    print(CITES3)
+    print(result.status_code)
     wjdata = json.loads(result.text)
-    #print(wjdata)
+    print(wjdata)
 
     if len(wjdata) == 0:
         return jsonify({'value': 'Aucun pays déclaré dans la base CITES.'})
