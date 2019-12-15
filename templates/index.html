@@ -4,10 +4,10 @@
     <meta charset="utf-8"/>
     <meta http-equiv="expires" content="0">
     <meta http-equiv="pragma" content="no-cache">
-    <link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet-src.js"></script>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
     <script>var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
     <link rel="stylesheet" type="text/css" href="/static/style.css" />
 
@@ -80,7 +80,7 @@
                                    if(map != undefined)
                                    {
                                         map.remove();
-                                        map = undefined
+                                        map = undefined;
                                         document.getElementById('map').innerHTML = '';
                                    }
                                    map = L.map('map').setView([30, 0], 2);
