@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, jsonify
 from SPARQLWrapper import SPARQLWrapper, JSON
 from wikidata import WIKIDATA_REQUEST1, WIKIDATA_REQUEST2
-from cites import CITES1, CITES2, CITES3
+from cites import CITES1, CITES2, CITES_KEY
 import requests
 import json
 
@@ -50,21 +50,27 @@ def search():
 def cites(id):
     req = CITES1 + str(id) + CITES2
     print (req)
-    result = requests.get(req, headers={'X-Authentication-Token': CITES3})
-    print(CITES3)
+    result = requests.get(req, headers={'X-Authentication-Token': CITES_KEY})
     print(result.status_code)
     wjdata = json.loads(result.text)
     print(wjdata)
 
     if len(wjdata) == 0:
-        return jsonify({'value': 'Aucun pays déclaré dans la base CITES.'})
+        return jsonify({'value': []})
     else:
-        return_val = ""
-        for val in wjdata:
-            print (str(val["name"]))
-            return_val = return_val + str(val["name"]) + ' - '
-        return jsonify({'value': return_val})
+        liste = []
 
+        for val in wjdata:
+
+            # name, iso_code2, tags
+            if len(val["tags"]) == 0:
+                name = str(val['name'])
+                code = str(val['iso_code2'])
+                xx = { 'name': name, 'code':  code}
+                liste.append(xx)
+
+        #print (liste)
+        return jsonify({'value': liste})
 
 if __name__ == '__main__':
     #app.run(debug=True)
