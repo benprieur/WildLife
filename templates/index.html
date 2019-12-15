@@ -17,11 +17,11 @@
 <body>
 <div id="call2action">Lancez une recherche sur les bases Wikidata & SPECIES+ des espèces menacées</div>
 <form action="search" method= "post" width="90%" id="searchform">
-    <input pattern=".{4,8}" required title="4 à 8 caractères" type="search" placeholder="Mot-clé..." name="search" id="search" required/>
+    <input pattern=".{4,}" required title="Minimum de 4 caractères" type="search" placeholder="Mots-clés..." name="search" id="search" required/>
     <button type="submit" class="searchbutton" onclick="
     var val = document.getElementById('search').value;
 
-    if (val.length >= 4 && val.length <= 8) {
+    if (val.length >= 4) {
         $('#loading').show();
         document.getElementById('table').innerText = '';
         document.getElementById('commentaire').innerText = '';
